@@ -638,10 +638,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Campeonato 1 Ranker
+  m_text: "\u0420\u0430\u043D\u043D\u0438\u043A\u1787\u17BE\u1784\u17AF\u1780 1 \u1787\u17B6\u1793\u17CB"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8a682b7747d4a664089b7b1065aa0035, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 7f95b7881d4f249d49bd9a30780174ea, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 397ac37e8f69f4733838964450ef3003, type: 2}
+  m_sharedMaterial: {fileID: 6050839101350916631, guid: 397ac37e8f69f4733838964450ef3003,
+    type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -767,7 +768,7 @@ MonoBehaviour:
   m_IgnoreLayout: 0
   m_MinWidth: -1
   m_MinHeight: -1
-  m_PreferredWidth: 115
+  m_PreferredWidth: 162.2
   m_PreferredHeight: -1
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
