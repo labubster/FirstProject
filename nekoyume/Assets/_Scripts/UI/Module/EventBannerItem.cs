@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections;
-using Nekoyume.State;
-using Nekoyume.UI.Model;
+﻿using Nekoyume.Game.Notice;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.UI;
 
 namespace Nekoyume.UI.Module
@@ -16,43 +12,15 @@ namespace Nekoyume.UI.Module
         [SerializeField]
         private Button button;
 
-        private const string Url =
-            "https://raw.githubusercontent.com/planetarium/NineChronicles.LiveAssets/main/Assets/Images/Banner";
-
-        public void Set(EventBannerData data)
+        public void Set(NoticeData data, System.Action<NoticeData> onClick = null)
         {
-            StartCoroutine(SetTexture(data.BannerImageName));
-            SetButton(data.Url, data.UseAgentAddress);
-        }
-
-        private IEnumerator SetTexture(string imageName)
-        {
-            var www = UnityWebRequestTexture.GetTexture($"{Url}/{imageName}.png");
-            yield return www.SendWebRequest();
-            if (www.result != UnityWebRequest.Result.Success)
-            {
-                Debug.Log(www.error);
-            }
-            else
-            {
-                var myTexture = ((DownloadHandlerTexture)www.downloadHandler).texture;
-                image.texture = myTexture;
-            }
-        }
-
-        private void SetButton(string url, bool useAgentAddress)
-        {
+            image.texture = data.BannerImage.texture;
             button.onClick.RemoveAllListeners();
             button.onClick.AddListener(() =>
             {
-                var u = url;
-                if (useAgentAddress)
-                {
-                    var address = States.Instance.AgentState.address;
-                    u = string.Format(url, address);
-                }
-
-                Application.OpenURL(u);
+                var action = onClick ?? (noticeData =>
+                    Widget.Find<EventReleaseNotePopup>().Show(noticeData));
+                action.Invoke(data);
             });
         }
     }

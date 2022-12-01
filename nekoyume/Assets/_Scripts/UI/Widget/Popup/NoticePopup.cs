@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections;
+using System.Linq;
 using UnityEngine.UI;
 using UnityEngine;
 using Nekoyume.Game.Controller;
-using UnityEngine.Networking;
 using Nekoyume.UI.Model;
-using System.Text.Json;
+using Nekoyume.Game.Notice;
 
 namespace Nekoyume.UI
 {
@@ -20,15 +19,7 @@ namespace Nekoyume.UI
         [SerializeField]
         private Button closeButton;
 
-        [SerializeField]
-        private CanvasGroup canvasGroup;
-
         private const string LastNoticeDayKeyFormat = "LAST_NOTICE_DAY_{0}";
-        private const string JsonUrl =
-            "https://raw.githubusercontent.com/planetarium/NineChronicles.LiveAssets/main/Assets/Json/Notice.json";
-
-        private const string ImageUrl =
-            "https://raw.githubusercontent.com/planetarium/NineChronicles.LiveAssets/main/Assets/Images/Notice";
 
         private Notice _data;
 
@@ -75,55 +66,23 @@ namespace Nekoyume.UI
                 Close();
                 AudioController.PlayClick();
             });
-            closeButton.interactable = false;
-        }
-
-        private void Set(string json)
-        {
-            var data = JsonSerializer.Deserialize<Notice>(json);
-            _data = data;
-            StartCoroutine(CoSetTexture(_data.ImageName));
-
-            detailButton.onClick.RemoveAllListeners();
-            detailButton.onClick.AddListener(() =>
-            {
-                Application.OpenURL(data.Url);
-                AudioController.PlayClick();
-            });
-
-            if (CanShowNoticePopup())
-            {
-                canvasGroup.alpha = 1;
-            }
-            else
-            {
-                Close();
-            }
         }
 
         public override void Show(bool ignoreStartAnimation = false)
         {
-            canvasGroup.alpha = 0;
             base.Show(ignoreStartAnimation);
-            StartCoroutine(RequestManager.instance.GetJson(JsonUrl, Set));
-        }
-
-        private IEnumerator CoSetTexture(string imageName)
-        {
-            var www = UnityWebRequestTexture.GetTexture($"{ImageUrl}/{imageName}.png");
-            yield return www.SendWebRequest();
-            closeButton.interactable = true;
-            if (www.result != UnityWebRequest.Result.Success)
+            var firstPopup =
+                NoticeManager.instance.Data.FirstOrDefault(data => data.PopupImage != null);
+            if (firstPopup is not null)
             {
-                Debug.Log(www.error);
-            }
-            else
-            {
-                var myTexture = ((DownloadHandlerTexture)www.downloadHandler).texture;
-                contentImage.sprite = Sprite.Create(
-                    myTexture,
-                    new Rect(0, 0, myTexture.width, myTexture.height),
-                    new Vector2(0.5f, 0.5f));
+                detailButton.onClick.RemoveAllListeners();
+                detailButton.onClick.AddListener(() =>
+                {
+                    Application.OpenURL(firstPopup.Url);
+                    AudioController.PlayClick();
+                });
+                contentImage.sprite = firstPopup.PopupImage;
+                Debug.LogError($"desc: {firstPopup.Description}");
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using Cysharp.Threading.Tasks;
 using Nekoyume.Pattern;
@@ -45,7 +46,7 @@ namespace Nekoyume.Game.Notice
         private void Set(string response)
         {
             var responseData = JsonSerializer.Deserialize<EventBanners>(response);
-            MakeNoticeData(responseData.Banners).Forget();
+            MakeNoticeData(responseData?.Banners.OrderBy(x => x.Priority)).Forget();
         }
 
         private async UniTaskVoid MakeNoticeData(IEnumerable<EventBannerData> bannerData)
@@ -53,6 +54,11 @@ namespace Nekoyume.Game.Notice
             var tasks = new List<UniTask>();
             foreach (var banner in bannerData)
             {
+                if (banner.UseDateTime && !Helper.Util.IsInTime(banner.BeginDateTime, banner.EndDateTime))
+                {
+                    continue;
+                }
+
                 var newData = new NoticeData
                 {
                     Priority = banner.Priority,
@@ -66,11 +72,6 @@ namespace Nekoyume.Game.Notice
                     Description = banner.Description
                 };
                 _data.Add(newData);
-
-                if (newData.UseDateTime && !Helper.Util.IsInTime(newData.BeginDateTime, newData.EndDateTime))
-                {
-                    continue;
-                }
 
                 var bannerTask = GetTexture("Banner", banner.BannerImageName)
                     .ContinueWith(sprite => newData.BannerImage = sprite);

@@ -92,7 +92,7 @@ namespace Nekoyume.Game.Entrance
 
             Widget.Find<Status>().Show();
             Widget.Find<EventBanner>().Show();
-            Widget.Find<NoticePopup>().Show();
+            Widget.Find<EventReleaseNotePopup>().Show();
             var headerMenu = Widget.Find<HeaderMenuStatic>();
             if (!headerMenu.isActiveAndEnabled)
             {
