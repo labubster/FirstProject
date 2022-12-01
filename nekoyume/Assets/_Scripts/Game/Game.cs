@@ -19,6 +19,7 @@ using mixpanel;
 using Nekoyume.Action;
 using Nekoyume.BlockChain;
 using Nekoyume.Game.Controller;
+using Nekoyume.Game.Notice;
 using Nekoyume.Game.VFX;
 using Nekoyume.Helper;
 using Nekoyume.L10n;
@@ -204,6 +205,7 @@ namespace Nekoyume.Game
             }
 
             gameObject.AddComponent<RequestManager>();
+            gameObject.AddComponent<NoticeManager>().InitializeData();
 
             WorldBossQuery.SetUrl(_options.OnBoardingHost);
 

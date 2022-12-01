@@ -21,7 +21,7 @@ namespace Nekoyume.UI.Module
 
         public void Set(EventBannerData data)
         {
-            StartCoroutine(SetTexture(data.ImageName));
+            StartCoroutine(SetTexture(data.BannerImageName));
             SetButton(data.Url, data.UseAgentAddress);
         }
 
