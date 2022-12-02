@@ -29122,7 +29122,7 @@ GameObject:
   - component: {fileID: 7171611368931243748}
   - component: {fileID: 355725474902212459}
   m_Layer: 0
-  m_Name: actionBuff_Staking
+  m_Name: buff_plus_damage_reduction_rate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

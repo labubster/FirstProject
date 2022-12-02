@@ -28998,7 +28998,7 @@ GameObject:
   - component: {fileID: 566230746392552220}
   - component: {fileID: -2735069281706056238}
   m_Layer: 14
-  m_Name: Staking_casting
+  m_Name: buff_staking_casting
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
